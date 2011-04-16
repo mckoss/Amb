@@ -367,22 +367,42 @@ namespace.module('org.startpad.amb', function (exports, require) {
         'range': range
     });
 
+    function Range() {
+        this.min = 0;
+        this.max = 0;
+        this.init.apply(this, arguments);
+    }
+
+    Range.methods({
+        init: function() {
+            if (arguments.length == 1) {
+                if (types.isArray(arguments[0])) {
+                    this.max = arguments[0].length;
+                    this.values = arguments[0];
+                } else {
+                    this.max = arguments[0];
+                }
+            } else if (arguments.length == 2) {
+                this.min = arguments[0];
+                this.max = arguments[1];
+            }
+        },
+
+        count: function () {
+            return Math.min(0, this.max - this.min);
+        },
+
+        get: function (i) {
+            if (this.values) {
+                return this.values[i];
+            }
+            return (this.min + i);
+        }
+    });
+
     function range() {
-        var r;
-        if (arguments.length == 1) {
-            if (types.isArray(arguments[0])) {
-                r = {min: 0, max: arguments[0].length, values: arguments[0]};
-            } else {
-                r = {min: 0, max: arguments[0]};
-            }
-        } else if (arguments.length == 2) {
-            r = {min: arguments[0], max: arguments[1]};
-        }
-        if (r) {
-            if (r.min >= r.max) {
-                r = undefined;
-            }
-        }
+        var r = new Range();
+        r.init.apply(r, arguments);
         return r;
     }
 
@@ -393,18 +413,19 @@ namespace.module('org.startpad.amb', function (exports, require) {
         var choices = [];
         var index;
 
-        function amb(values) {
-            if (!values || !values.length) {
+        function amb() {
+            values = range.apply(undefined, arguments);
+            if (!values) {
                 fail();
             }
             if (index == choices.length) {
-                var start = Math.floor(id * values.length / workers);
+                var start = Math.floor(id * values.count / workers);
                 choices.push({i: start,
                               start: start,
-                              count: values.length});
+                              count: values.count});
             }
             var choice = choices[index++];
-            return values[choice.i];
+            return values.get(choice.i);
         }
 
         function fail() { fail.failures++; throw fail; }
