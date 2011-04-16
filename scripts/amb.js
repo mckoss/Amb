@@ -11,8 +11,8 @@ namespace.module('org.startpad.amb', function (exports, require) {
     function range() {
         var r;
         if (arguments.length == 1) {
-            if (types.isArray(values)) {
-                r = {min: 0, max: values.length, values: values};
+            if (types.isArray(arguments[0])) {
+                r = {min: 0, max: arguments[0].length, values: arguments[0]};
             } else {
                 r = {min: 0, max: arguments[0]};
             }

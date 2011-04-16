@@ -35,7 +35,14 @@ namespace.module('org.startpad.amb.test', function (exports, require) {
         ut.ok(x[0] + x[1] > 10, x);
     });
 
-    ut.test("range support", function () {
+    ut.test("range", function () {
+        ut.equal(amb.range(), undefined, "zero args");
+        ut.deepEqual(amb.range(10), {min: 0, max: 10}, "one arg");
+        ut.deepEqual(amb.range(10, 15), {min: 10, max: 15}, "two args");
+        ut.deepEqual(amb.range([1, 2, 3]), {min: 0, max: 3, values: [1, 2, 3]}, "array");
+    });
+
+    ut.test("amb range", function () {
         function range1(amb, fail) {
             var x = amb(10);
             if (x != 5) fail();
