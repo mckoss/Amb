@@ -1,6 +1,7 @@
 namespace.module('org.startpad.amb.demos', function(exports, require) {
     var dom = require('org.startpad.dom');
     var clientLib = require('com.pageforest.client');
+    var funcs = require('org.startpad.funcs').patch();
 
     exports.extend({
         'main': main,

@@ -16,6 +16,25 @@ namespace.module('org.startpad.amb.test', function (exports, require) {
         ut.ok(version[0] == 1 && version[1] == 0, "tests for version 1.0");
     });
 
+    function moreThanTen(amb, fail) {
+      var a = amb([1, 2, 3]);
+      var b = amb([7, 8, 9]);
+      if (a + b <= 10) {
+         fail();
+      }
+      return [a, b];
+    }
+
+    ut.test("ambCall", function () {
+        var x = amb.ambCall(moreThanTen);
+        ut.ok(x[0] + x[1] > 10, x);
+    });
+
+    ut.test("ambCallWorker", function () {
+        var x = amb.ambCallWorker(3, 4, moreThanTen);
+        ut.ok(x[0] + x[1] > 10, x);
+    });
+
     coverage.testCoverage();
 
 });
