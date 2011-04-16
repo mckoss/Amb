@@ -3,7 +3,8 @@
     "scripts/combined.js": [
       "sub/namespace/namespace-plus.js",
       "scripts/main.js",
-      "scripts/amb.js"
+      "scripts/amb.js",
+      "scripts/queens.js"
     ]
   },
   "minify": true,

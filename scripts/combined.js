@@ -303,6 +303,8 @@ namespace.module('org.startpad.amb.demos', function(exports, require) {
     var dom = require('org.startpad.dom');
     var clientLib = require('com.pageforest.client');
     var funcs = require('org.startpad.funcs').patch();
+    var amb = require('org.startpad.amb');
+    var queens = require('org.startpad.amb.demos.queens');
 
     exports.extend({
         'main': main,
@@ -322,6 +324,10 @@ namespace.module('org.startpad.amb.demos', function(exports, require) {
                                       });
 
         client.addAppBar();
+        $(doc.queens).click(function () {
+            var solution = amb.ambCall(queens.eightQueens);
+            console.log(solution);
+        });
     }
 
     function setDoc(json) {
@@ -352,11 +358,33 @@ namespace.module('org.startpad.amb.demos', function(exports, require) {
     }
 });
 namespace.module('org.startpad.amb', function (exports, require) {
+    var types = require('org.startpad.types');
+
     exports.extend({
         'VERSION': '1.0.0r1',
         'ambCall': function (func) { return ambCallWorker(0, 1, func); },
-        'ambCallWorker': ambCallWorker
+        'ambCallWorker': ambCallWorker,
+        'range': range
     });
+
+    function range() {
+        var r;
+        if (arguments.length == 1) {
+            if (types.isArray(values)) {
+                r = {min: 0, max: values.length, values: values};
+            } else {
+                r = {min: 0, max: arguments[0]};
+            }
+        } else if (arguments.length == 2) {
+            r = {min: arguments[0], max: arguments[1]};
+        }
+        if (r) {
+            if (r.min >= r.max) {
+                r = undefined;
+            }
+        }
+        return r;
+    }
 
     // Call func(amb, fail) until it succeeds.
     // Calls to amb returns a selected value.  func is restarted if
@@ -366,7 +394,10 @@ namespace.module('org.startpad.amb', function (exports, require) {
         var index;
 
         function amb(values) {
-            if (values.length == 0) {
+            if (!types.isArray(values)) {
+                values = ranges.call(undefined, arguments);
+            }
+            if (!values || !values.length) {
                 fail();
             }
             if (index == choices.length) {
@@ -407,4 +438,37 @@ namespace.module('org.startpad.amb', function (exports, require) {
         }
     }
 
+});
+namespace.module('org.startpad.amb.demos.queens', function (exports, require) {
+    var amb = require('org.startpad.amb');
+
+    exports['eightQueens'] = eightQueens;
+
+    function eightQueens(amb, fail) {
+        var queens = [];
+        var rows = [], cols = [], diag1 = [], diag2 = [];
+
+        function unique(n, a) {
+            if (a[n]) {
+                fail();
+            }
+            a[n] = true;
+        }
+
+        function check(pos) {
+            var row = pos[0];
+            var col = pos[1];
+            unique(row, rows);
+            unique(col, cols);
+            unique(row - col, diag1);
+            unique(col - row, diag2);
+        }
+
+        for (var i = 0; i < 8; i++) {
+            var next = [amb(8), amb(8)];
+            check(next);
+            queens.push(next);
+        }
+        return queens;
+    }
 });

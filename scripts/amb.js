@@ -1,9 +1,31 @@
 namespace.module('org.startpad.amb', function (exports, require) {
+    var types = require('org.startpad.types');
+
     exports.extend({
         'VERSION': '1.0.0r1',
         'ambCall': function (func) { return ambCallWorker(0, 1, func); },
-        'ambCallWorker': ambCallWorker
+        'ambCallWorker': ambCallWorker,
+        'range': range
     });
+
+    function range() {
+        var r;
+        if (arguments.length == 1) {
+            if (types.isArray(values)) {
+                r = {min: 0, max: values.length, values: values};
+            } else {
+                r = {min: 0, max: arguments[0]};
+            }
+        } else if (arguments.length == 2) {
+            r = {min: arguments[0], max: arguments[1]};
+        }
+        if (r) {
+            if (r.min >= r.max) {
+                r = undefined;
+            }
+        }
+        return r;
+    }
 
     // Call func(amb, fail) until it succeeds.
     // Calls to amb returns a selected value.  func is restarted if
@@ -13,7 +35,7 @@ namespace.module('org.startpad.amb', function (exports, require) {
         var index;
 
         function amb(values) {
-            if (values.length == 0) {
+            if (!values || !values.length) {
                 fail();
             }
             if (index == choices.length) {
