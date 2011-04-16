@@ -303,7 +303,7 @@ namespace.module('org.startpad.amb.demos', function(exports, require) {
     var dom = require('org.startpad.dom');
     var clientLib = require('com.pageforest.client');
 
-    ns.extend({
+    exports.extend({
         'main': main,
         'getDoc': getDoc,
         'setDoc': setDoc
