@@ -412,7 +412,7 @@ namespace.module('org.startpad.amb', function (exports, require) {
 
         function amb() {
             values = range.apply(undefined, arguments);
-            if (!values) {
+            if (values.count == 0) {
                 fail();
             }
             if (index == choices.length) {

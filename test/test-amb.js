@@ -46,11 +46,13 @@ namespace.module('org.startpad.amb.test', function (exports, require) {
         function range1(amb, fail) {
             var x = amb(10);
             if (x != 5) fail();
+            return x;
         }
 
         function range2(amb, fail) {
             var x = amb(50, 75);
             if (x != 69) fail();
+            return x;
         }
 
         ut.equal(amb.ambCall(range1), 5, "0 .. n");
