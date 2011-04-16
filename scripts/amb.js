@@ -27,10 +27,7 @@ namespace.module('org.startpad.amb', function (exports, require) {
                 this.min = arguments[0];
                 this.max = arguments[1];
             }
-        },
-
-        count: function () {
-            return Math.min(0, this.max - this.min);
+            this.count = Math.max(0, this.max - this.min);
         },
 
         get: function (i) {
@@ -56,7 +53,7 @@ namespace.module('org.startpad.amb', function (exports, require) {
 
         function amb() {
             values = range.apply(undefined, arguments);
-            if (!values) {
+            if (values.count == 0) {
                 fail();
             }
             if (index == choices.length) {

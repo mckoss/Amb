@@ -36,10 +36,10 @@ namespace.module('org.startpad.amb.test', function (exports, require) {
     });
 
     ut.test("range", function () {
-        ut.equal(amb.range(), undefined, "zero args");
-        ut.deepEqual(amb.range(10), {min: 0, max: 10}, "one arg");
-        ut.deepEqual(amb.range(10, 15), {min: 10, max: 15}, "two args");
-        ut.deepEqual(amb.range([1, 2, 3]), {min: 0, max: 3, values: [1, 2, 3]}, "array");
+        ut.equal(amb.range().count, 0, "zero args");
+        ut.equal(amb.range(10).count, 10, "one arg");
+        ut.equal(amb.range(10, 15).count, 5, "two args");
+        ut.equal(amb.range([1, 2, 3]).count, 3, "array");
     });
 
     ut.test("amb range", function () {
