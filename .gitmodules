@@ -1,0 +1,3 @@
+[submodule "sub/namespace"]
+	path = sub/namespace
+	url = git@github.com:mckoss/namespace.git

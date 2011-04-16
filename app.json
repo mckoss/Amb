@@ -1,0 +1,14 @@
+{
+  "application": "amb",
+  "cloneable": false,
+  "owner": "mckoss",
+  "readers": [
+    "public"
+  ],
+  "referers": [],
+  "secureData": false,
+  "tags": [],
+  "title": "Amb - non-deterministic programming demo",
+  "url": "http://amb.pageforest.com/",
+  "writers": []
+}
